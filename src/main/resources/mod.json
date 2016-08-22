@@ -1,0 +1,7 @@
+{
+	"group": "net.fabricmc",
+	"id": "fabric-resources",
+	"version": "1.0.0",
+	"side": "client",
+	"modClass": "net.fabricmc.resources.FabricResources"
+}
