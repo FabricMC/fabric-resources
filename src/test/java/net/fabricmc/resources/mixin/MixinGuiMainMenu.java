@@ -18,7 +18,7 @@ package net.fabricmc.resources.mixin;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.impl.GuiMainMenu;
+import net.minecraft.client.gui.screen.menu.GuiMainMenu;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
