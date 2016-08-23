@@ -23,6 +23,7 @@ import net.fabricmc.base.loader.Loader;
 import net.fabricmc.base.loader.ModContainer;
 import net.fabricmc.base.loader.ModInfo;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resource.IResourcePack;
 import net.minecraft.util.Identifier;
 
 import java.io.File;
@@ -32,6 +33,8 @@ import java.util.List;
 public class FabricResources {
 
 	public static final Identifier MISSING_TEX = new Identifier("minecraft", "textures/misc/unknown_server.png");
+
+	private static List<IResourcePack> fabricPacks = new ArrayList<>();
 
 	@Init
 	public void init() {
@@ -43,17 +46,22 @@ public class FabricResources {
 		List<String> packsAdded = new ArrayList<>();
 		Minecraft mc = Minecraft.getInstance();
 
+		mc.defaultResourcePacks.removeAll(fabricPacks);
+		fabricPacks.clear();
+
 		for (ModContainer mod : Loader.INSTANCE.getMods()) {
 			File originFile = mod.getOriginFile();
 			if (!packsAdded.contains(originFile.getAbsolutePath())) {
 				if (originFile.isDirectory()) {
-					mc.defaultResourcePacks.add(new ModFolderPack(originFile, mod.getInfo()));
+					fabricPacks.add(new ModFolderPack(originFile, mod.getInfo()));
 				} else {
-					mc.defaultResourcePacks.add(new ModFilePack(originFile, mod.getInfo()));
+					fabricPacks.add(new ModFilePack(originFile, mod.getInfo()));
 				}
 				packsAdded.add(originFile.getAbsolutePath());
 			}
 		}
+
+		mc.defaultResourcePacks.addAll(fabricPacks);
 	}
 
 	static String createPackMetaString(ModInfo info) {
