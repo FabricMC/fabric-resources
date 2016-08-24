@@ -17,7 +17,7 @@
 package net.fabricmc.resources;
 
 import net.fabricmc.base.loader.ModInfo;
-import net.minecraft.client.resource.DirectoryResourcePack;
+import net.minecraft.client.resource.pack.DirectoryResourcePack;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -36,9 +36,9 @@ public class ModFolderPack extends DirectoryResourcePack {
 	}
 
 	@Override
-	public InputStream a(String name) throws IOException {
+	public InputStream openByPath(String name) throws IOException {
 		try {
-			return super.a(name);
+			return super.openByPath(name);
 		} catch (IOException e) {
 			if ("pack.mcmeta".equals(name)) {
 				return new ByteArrayInputStream(FabricResources.createPackMetaString(info).getBytes());

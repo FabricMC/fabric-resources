@@ -23,7 +23,7 @@ import net.fabricmc.base.loader.Loader;
 import net.fabricmc.base.loader.ModContainer;
 import net.fabricmc.base.loader.ModInfo;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resource.IResourcePack;
+import net.minecraft.client.resource.pack.IResourcePack;
 import net.minecraft.util.Identifier;
 
 import java.io.File;
@@ -55,7 +55,7 @@ public class FabricResources {
 				if (originFile.isDirectory()) {
 					fabricPacks.add(new ModFolderPack(originFile, mod.getInfo()));
 				} else {
-					fabricPacks.add(new ModFilePack(originFile, mod.getInfo()));
+					fabricPacks.add(new ModZipFilePack(originFile, mod.getInfo()));
 				}
 				packsAdded.add(originFile.getAbsolutePath());
 			}

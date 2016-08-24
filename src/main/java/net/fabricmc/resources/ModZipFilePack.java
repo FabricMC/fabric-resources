@@ -17,7 +17,7 @@
 package net.fabricmc.resources;
 
 import net.fabricmc.base.loader.ModInfo;
-import net.minecraft.client.resources.FileResourcePack;
+import net.minecraft.client.resource.pack.ZipFileResourcePack;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -26,19 +26,19 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ModFilePack extends FileResourcePack {
+public class ModZipFilePack extends ZipFileResourcePack {
 
 	private final ModInfo info;
 
-	public ModFilePack(File f, ModInfo info) {
+	public ModZipFilePack(File f, ModInfo info) {
 		super(f);
 		this.info = info;
 	}
 
 	@Override
-	public InputStream a(String name) throws IOException {
+	public InputStream openByPath(String name) throws IOException {
 		try {
-			return super.a(name);
+			return super.openByPath(name);
 		} catch (IOException e) {
 			if ("pack.mcmeta".equals(name)) {
 				return new ByteArrayInputStream(FabricResources.createPackMetaString(info).getBytes());
