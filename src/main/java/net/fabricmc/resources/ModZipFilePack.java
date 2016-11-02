@@ -49,7 +49,7 @@ public class ModZipFilePack extends ZipFileResourcePack {
 	}
 
 	@Override
-	public BufferedImage getLogo() throws IOException {
+	public BufferedImage getIcon() throws IOException {
 		return ImageIO.read(open(FabricResources.MISSING_TEX));
 	}
 }

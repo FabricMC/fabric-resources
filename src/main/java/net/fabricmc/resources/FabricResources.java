@@ -16,13 +16,12 @@
 
 package net.fabricmc.resources;
 
-import net.fabricmc.api.Hook;
-import net.fabricmc.base.Fabric;
 import net.fabricmc.base.loader.Init;
 import net.fabricmc.base.loader.Loader;
 import net.fabricmc.base.loader.ModContainer;
 import net.fabricmc.base.loader.ModInfo;
-import net.minecraft.client.Minecraft;
+import net.fabricmc.resources.hooks.IMinecraftGameHooks;
+import net.minecraft.client.MinecraftGame;
 import net.minecraft.client.resource.pack.IResourcePack;
 import net.minecraft.util.Identifier;
 
@@ -38,15 +37,15 @@ public class FabricResources {
 
 	@Init
 	public void init() {
-		Fabric.getLoadingBus().subscribe(this);
+		Loader.INSTANCE.modsInitialized.subscribe(() -> onModsInitialized());
 	}
 
-	@Hook(name = "net.fabricmc.fabric-resources:onModsInitialized", before = {}, after = "fabric:modsInitialized")
+
 	public void onModsInitialized() {
 		List<String> packsAdded = new ArrayList<>();
-		Minecraft mc = Minecraft.getInstance();
-
-		mc.defaultResourcePacks.removeAll(fabricPacks);
+		MinecraftGame mc = MinecraftGame.getInstance();
+		IMinecraftGameHooks minecraftGameHooks = (IMinecraftGameHooks) mc;
+		minecraftGameHooks.getDefaultResourcePacks().removeAll(fabricPacks);
 		fabricPacks.clear();
 
 		for (ModContainer mod : Loader.INSTANCE.getMods()) {
@@ -61,7 +60,7 @@ public class FabricResources {
 			}
 		}
 
-		mc.defaultResourcePacks.addAll(fabricPacks);
+		minecraftGameHooks.getDefaultResourcePacks().addAll(fabricPacks);
 	}
 
 	static String createPackMetaString(ModInfo info) {
