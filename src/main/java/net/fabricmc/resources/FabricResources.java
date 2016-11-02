@@ -35,11 +35,14 @@ public class FabricResources {
 
 	private static List<IResourcePack> fabricPacks = new ArrayList<>();
 
+	static String createPackMetaString(ModInfo info) {
+		return String.format("{ \"pack\": { \"description\": \"Dummy resource pack for %s.%s\", \"pack_format\": 1 } }", info.getGroup(), info.getId());
+	}
+
 	@Init
 	public void init() {
 		Loader.INSTANCE.modsInitialized.subscribe(() -> onModsInitialized());
 	}
-
 
 	public void onModsInitialized() {
 		List<String> packsAdded = new ArrayList<>();
@@ -61,10 +64,6 @@ public class FabricResources {
 		}
 
 		minecraftGameHooks.getDefaultResourcePacks().addAll(fabricPacks);
-	}
-
-	static String createPackMetaString(ModInfo info) {
-		return String.format("{ \"pack\": { \"description\": \"Dummy resource pack for %s.%s\", \"pack_format\": 1 } }", info.getGroup(), info.getId());
 	}
 
 }
