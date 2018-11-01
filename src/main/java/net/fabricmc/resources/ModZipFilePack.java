@@ -16,8 +16,8 @@
 
 package net.fabricmc.resources;
 
-import net.fabricmc.base.loader.ModInfo;
-import net.minecraft.client.resource.pack.ZipFileResourcePack;
+import net.fabricmc.loader.ModInfo;
+import net.minecraft.resource.ZipResourcePack;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -26,7 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ModZipFilePack extends ZipFileResourcePack {
+public class ModZipFilePack extends ZipResourcePack {
 
 	private final ModInfo info;
 
@@ -36,9 +36,9 @@ public class ModZipFilePack extends ZipFileResourcePack {
 	}
 
 	@Override
-	public InputStream openByPath(String name) throws IOException {
+	public InputStream openFilename(String name) throws IOException {
 		try {
-			return super.openByPath(name);
+			return super.openFilename(name);
 		} catch (IOException e) {
 			if ("pack.mcmeta".equals(name)) {
 				return new ByteArrayInputStream(FabricResources.createPackMetaString(info).getBytes());
@@ -46,10 +46,5 @@ public class ModZipFilePack extends ZipFileResourcePack {
 				throw e;
 			}
 		}
-	}
-
-	@Override
-	public BufferedImage getIcon() throws IOException {
-		return ImageIO.read(open(FabricResources.MISSING_TEX));
 	}
 }

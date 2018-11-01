@@ -16,42 +16,36 @@
 
 package net.fabricmc.resources;
 
-import net.fabricmc.base.loader.Init;
-import net.fabricmc.base.loader.Loader;
-import net.fabricmc.base.loader.ModContainer;
-import net.fabricmc.base.loader.ModInfo;
-import net.fabricmc.resources.hooks.IMinecraftGameHooks;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.FabricLoader;
+import net.fabricmc.loader.ModContainer;
+import net.fabricmc.loader.ModInfo;
 import net.minecraft.client.MinecraftGame;
-import net.minecraft.client.resource.pack.IResourcePack;
+import net.minecraft.resource.ResourcePack;
 import net.minecraft.util.Identifier;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FabricResources {
+public class FabricResources implements ModInitializer  {
 
 	public static final Identifier MISSING_TEX = new Identifier("minecraft", "textures/misc/unknown_server.png");
 
-	private static List<IResourcePack> fabricPacks = new ArrayList<>();
-
 	static String createPackMetaString(ModInfo info) {
-		return String.format("{ \"pack\": { \"description\": \"Dummy resource pack for %s.%s\", \"pack_format\": 1 } }", info.getGroup(), info.getId());
+		return String.format("{ \"pack\": { \"description\": \"Dummy resource pack for %s\", \"pack_format\": 1 } }", info.getId());
 	}
 
-	@Init
-	public void init() {
-		Loader.INSTANCE.modsInitialized.subscribe(() -> onModsInitialized());
+	@Override
+	public void onInitialize() {
+
 	}
 
-	public void onModsInitialized() {
+	public static List<ResourcePack> getResourcePacks() {
 		List<String> packsAdded = new ArrayList<>();
-		MinecraftGame mc = MinecraftGame.getInstance();
-		IMinecraftGameHooks minecraftGameHooks = (IMinecraftGameHooks) mc;
-		minecraftGameHooks.getDefaultResourcePacks().removeAll(fabricPacks);
-		fabricPacks.clear();
+		List<ResourcePack> fabricPacks = new ArrayList<>();
 
-		for (ModContainer mod : Loader.INSTANCE.getMods()) {
+		for (ModContainer mod : FabricLoader.INSTANCE.getMods()) {
 			File originFile = mod.getOriginFile();
 			if (!packsAdded.contains(originFile.getAbsolutePath())) {
 				if (originFile.isDirectory()) {
@@ -63,7 +57,7 @@ public class FabricResources {
 			}
 		}
 
-		minecraftGameHooks.getDefaultResourcePacks().addAll(fabricPacks);
+		return fabricPacks;
 	}
 
 }
