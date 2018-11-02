@@ -25,9 +25,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = GuiMainMenu.class, remap = false)
+@Mixin(GuiMainMenu.class)
 public abstract class MixinGuiMainMenu extends Gui {
-
 	private static final Identifier TEX = new Identifier("resourcestest", "test.png");
 
 	@Inject(method = "draw(IIF)V", at = @At("RETURN"))
@@ -35,5 +34,4 @@ public abstract class MixinGuiMainMenu extends Gui {
 		MinecraftGame.getInstance().getTextureManager().bindTexture(TEX);
 		drawTexturedRect(0, 0, 0, 0, 50, 50);
 	}
-
 }

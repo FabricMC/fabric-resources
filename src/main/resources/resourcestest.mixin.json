@@ -3,7 +3,7 @@
   "package": "net.fabricmc.resources.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "MixinMinecraftGame"
+    "MixinGuiMainMenu"
   ],
   "refmap": "fabric-resources-refmap.json",
   "injectors": {
